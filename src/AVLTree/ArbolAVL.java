@@ -4,17 +4,19 @@ import java.util.List;
 
 public class ArbolAVL {
     private NodoAVL root;
+    private String inicialActual = "";
+
 
     public ArbolAVL() {
         root = null;
     }
-
     public class NodoAVL {
         private String palabra;
         private List<Integer> paginas;
         private NodoAVL left;
         private NodoAVL right;
         private int altura;
+
 
         public NodoAVL(String palabra, int pagina) {
             this.palabra = palabra;
@@ -40,12 +42,12 @@ public class ArbolAVL {
             int alturaDerecho = (right != null) ? right.altura : 0;
             return alturaIzquierdo - alturaDerecho;
         }
-
         public void agregarPagina(int numeroPagina) {
             if (!paginas.contains(numeroPagina)) {
                 paginas.add(numeroPagina);
             }
         }
+
     }
 
     public void insertar(String palabra, int pagina) {
@@ -91,7 +93,6 @@ public class ArbolAVL {
 
         return nodo;
     }
-
     private NodoAVL rotarDerecha(NodoAVL nodo) {
         NodoAVL nRoot = nodo.left;
 
@@ -103,7 +104,6 @@ public class ArbolAVL {
 
         return nRoot;
     }
-
     private NodoAVL rotarIzquierda(NodoAVL nodo) {
         NodoAVL nRoot = nodo.right;
 
@@ -143,8 +143,17 @@ public class ArbolAVL {
     private void recorridoInOrden(NodoAVL nodo) {
         if (nodo != null) {
             recorridoInOrden(nodo.left);
-            System.out.println(nodo.palabra + ": " + nodo.paginas);
+
+            String inicial = nodo.palabra.substring(0, 1);
+            if (!inicial.equals(inicialActual)) {
+                inicialActual = inicial;
+                System.out.println("-" + inicial.toUpperCase() + "-");
+            }
+
+            System.out.println(nodo.palabra + " " + nodo.paginas);
+
             recorridoInOrden(nodo.right);
         }
     }
+
 }

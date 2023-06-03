@@ -18,15 +18,21 @@ public class IndiceAlfabetico {
         int pagina=1;
         while (scan.hasNext()) {
             String linea = scan.next();
+
+            if (linea.contains("|")) {
+                linea = linea.replace("|", "");
+                pagina++;
+            }
+
             String[] palabras = linea.split("\\\\");
             for (String palabra: palabras) {
                 if (!palabra.isEmpty()) {
+                    if (palabra.length() > 20){
+                        linea = linea.substring(0, 20);
+                    }
                     indice.insertar(palabra, pagina);
                 }
             }
-
-
-            pagina++;
         }
         scan.close();
     }
@@ -44,4 +50,31 @@ public class IndiceAlfabetico {
             System.out.println("La palabra " + palabraBusca + " no se encontró en el índice.");
         }
     }
+
+    public static void main(String[] args) {
+        IndiceAlfabetico indice = new IndiceAlfabetico();
+        String archivo = "Arbol.txt";
+        Scanner scan = new Scanner(System.in);
+        String palabraBuscada;
+
+        try {
+            indice.creandoIndice(archivo);
+        } catch (FileNotFoundException e) {
+            System.out.println("El archivo: " + archivo + ", no se pudo encontrar");
+            return;
+        }
+
+        System.out.println("Índice creado correctamente");
+
+        indice.mostrarIndice();
+
+        System.out.print("Ingresa una palabra para buscar en el índice");
+        palabraBuscada = scan.nextLine();
+
+
+        System.out.println("Buscando '" + palabraBuscada + "' en el índice:");
+        indice.buscarPaginas(palabraBuscada);
+        System.out.println();
+    }
 }
+
